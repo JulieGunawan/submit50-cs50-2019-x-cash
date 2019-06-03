@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <cs50.h>
+#include <math.h>
+
+float get_positive(string answer);
+int quarter_return (int number); 
+int dime_return (int number); 
+int nickle_return (int number);
+int smallest_coin (int number);
+
+int main(void) {
+    int total_coin=0;
+    int remain=0;
+    float change = get_positive("How much change is owed?");
+    int round_up=round(change*100);
+    total_coin = smallest_coin(round_up);
+   
+    printf("Coin returned= %i\n",total_coin);
+}
+
+float get_positive(string answer) {
+    float n;
+    do {
+        n = get_float("%s",answer);
+    }
+    while (n<0);
+    
+    return n;
+}
+
+int quarter_return (int number) {
+    int quarter=0;
+    
+    if (number/25>0) {
+            quarter = number/25;
+    }
+    return quarter;
+}
+
+int dime_return (int number) {
+    int dime=0;
+    
+    if (number/10>0) {
+            dime = number/10;
+    }
+    return dime; 
+}
+
+int nickle_return (int number) {
+    int nickle=0;
+    
+    if (number/5>0) {
+            nickle = number/5;
+    }
+    return nickle; 
+}
+
+int smallest_coin (int number) {
+    int reminder=0;
+    int coin=0;
+    do {
+        if (quarter_return(number)>0) {
+            coin = coin + quarter_return(number);
+            reminder = number%25;
+            number=reminder;
+        }
+        else if (dime_return(number)>0) {
+            coin = coin + dime_return(number);
+            reminder = number%10; 
+            number=reminder;
+        }
+        else if (nickle_return(number)>0) {
+            coin = coin + nickle_return(number);
+            reminder = number%5;
+            number=reminder;
+        }
+        else {
+            reminder = number/1;
+            coin = coin + reminder;
+            reminder=0;
+        }
+    }
+    while (reminder!=0);
+    return coin;
+}
